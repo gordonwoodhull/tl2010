@@ -6,7 +6,7 @@ OUT = inst/shp
 STATE = tl_$(YEAR)_us_state10
 COUNTY = tl_$(YEAR)_us_county10
 ZCTA = tl_$(YEAR)_us_zcta510
-CURL_OPTS = --connect-timeout 15
+CURL_OPTS = --connect-timeout 15 --retry 3
 
 # wildcards and fancier rules could be used here,
 # but i'm too lazy to learn/debug that stuff atm
@@ -21,6 +21,7 @@ shapes: | $(STATE).zip $(COUNTY).zip $(ZCTA).zip
 	unzip -u $(ZCTA).zip -d $(OUT)
 	rm $(OUT)/$(ZCTA).prj $(OUT)/$(ZCTA).shp.xml $(OUT)/$(ZCTA).shx
 	gzip -f $(OUT)/$(ZCTA).shp
+	rm $(STATE).zip $(COUNTY).zip $(ZCTA).zip
 
 $(STATE).zip:
 	curl $(CURL_OPTS) $(URL)/STATE/$(YEAR)/$(STATE).zip -o $(STATE).zip
