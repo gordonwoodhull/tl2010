@@ -2,11 +2,15 @@
 # so this will have to be adjusted for later years
 YEAR = 2010
 URL = ftp://ftp2.census.gov/geo/tiger/TIGER$(YEAR)
-OUT = inst/shp
+OUT = ../inst/shp
 STATE = tl_$(YEAR)_us_state10
 COUNTY = tl_$(YEAR)_us_county10
 ZCTA = tl_$(YEAR)_us_zcta510
 CURL_OPTS = --connect-timeout 5 --retry 3
+
+.PHONY: all shapes
+
+all: shapes
 
 # wildcards and fancier rules could be used here,
 # but i'm too lazy to learn/debug that stuff atm
