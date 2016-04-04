@@ -1,0 +1,3 @@
+import(fastshp)
+import(foreign)
+export(zcta2010.shp, county2010.shp, state2010.shp, zcta2010.db, county2010.db, state2010.db)

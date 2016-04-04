@@ -1,0 +1,11 @@
+Package: tl2010
+Version: 0.1-0
+Title: Package containing TIGER/Line 2010 census shape files
+Author: Simon Urbanek <simon.urbanek@r-project.org>, US Census Bureau
+Maintainer: Simon Urbanek <simon.urbanek@r-project.org>
+Description: This package provides Census Bureau TIGER/Line 2010 shape files
+Imports: fastshp, foreign
+License: GPL-2
+URL: http://www.rforge.net/tl2010
+Packaged: 2015-09-15 22:06:12 UTC; urbanek
+NeedsCompilation: no

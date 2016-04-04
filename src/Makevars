@@ -1,0 +1,22 @@
+# note, the directory structure changes from year to year
+# so this will have to be adjusted for later years
+YEAR = 2010
+URL = ftp://ftp2.census.gov/geo/tiger/TIGER$(YEAR)
+STATE = tl_$(YEAR)_us_state10.zip
+COUNTY = tl_$(YEAR)_us_county10.zip
+ZCTA = tl_$(YEAR)_us_zcta510.zip
+
+shapes: | $(STATE) $(COUNTY) $(ZCTA)
+	mkdir -p inst/shp
+	unzip $(STATE) -d inst/shp
+	unzip $(COUNTY) -d inst/shp
+	unzip $(ZCTA) -d inst/shp
+
+$(STATE):
+	curl $(URL)/STATE/$(YEAR)/$(STATE) > $(STATE)
+
+$(COUNTY):
+	curl $(URL)/COUNTY/$(YEAR)/$(COUNTY) > $(COUNTY)
+
+$(ZCTA):
+	curl $(URL)/ZCTA5/$(YEAR)/$(ZCTA) > $(ZCTA)
