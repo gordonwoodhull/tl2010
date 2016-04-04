@@ -2,21 +2,31 @@
 # so this will have to be adjusted for later years
 YEAR = 2010
 URL = ftp://ftp2.census.gov/geo/tiger/TIGER$(YEAR)
-STATE = tl_$(YEAR)_us_state10.zip
-COUNTY = tl_$(YEAR)_us_county10.zip
-ZCTA = tl_$(YEAR)_us_zcta510.zip
+OUT = inst/shp
+STATE = tl_$(YEAR)_us_state10
+COUNTY = tl_$(YEAR)_us_county10
+ZCTA = tl_$(YEAR)_us_zcta510
+CURL_OPTS = --connect-timeout 15
 
-shapes: | $(STATE) $(COUNTY) $(ZCTA)
-	mkdir -p inst/shp
-	unzip $(STATE) -d inst/shp
-	unzip $(COUNTY) -d inst/shp
-	unzip $(ZCTA) -d inst/shp
+# wildcards and fancier rules could be used here,
+# but i'm too lazy to learn/debug that stuff atm
+shapes: | $(STATE).zip $(COUNTY).zip $(ZCTA).zip
+	mkdir -p $(OUT)
+	unzip -u $(STATE).zip -d $(OUT)
+	rm $(OUT)/$(STATE).prj $(OUT)/$(STATE).shp.xml $(OUT)/$(STATE).shx
+	gzip -f $(OUT)/$(STATE).shp
+	unzip -u $(COUNTY).zip -d $(OUT)
+	rm $(OUT)/$(COUNTY).prj $(OUT)/$(COUNTY).shp.xml $(OUT)/$(COUNTY).shx
+	gzip -f $(OUT)/$(COUNTY).shp
+	unzip -u $(ZCTA).zip -d $(OUT)
+	rm $(OUT)/$(ZCTA).prj $(OUT)/$(ZCTA).shp.xml $(OUT)/$(ZCTA).shx
+	gzip -f $(OUT)/$(ZCTA).shp
 
-$(STATE):
-	curl $(URL)/STATE/$(YEAR)/$(STATE) > $(STATE)
+$(STATE).zip:
+	curl $(CURL_OPTS) $(URL)/STATE/$(YEAR)/$(STATE).zip -o $(STATE).zip
 
-$(COUNTY):
-	curl $(URL)/COUNTY/$(YEAR)/$(COUNTY) > $(COUNTY)
+$(COUNTY).zip:
+	curl $(CURL_OPTS) $(URL)/COUNTY/$(YEAR)/$(COUNTY).zip -o $(COUNTY).zip
 
-$(ZCTA):
-	curl $(URL)/ZCTA5/$(YEAR)/$(ZCTA) > $(ZCTA)
+$(ZCTA).zip:
+	curl $(CURL_OPTS) $(URL)/ZCTA5/$(YEAR)/$(ZCTA).zip -o $(ZCTA).zip
